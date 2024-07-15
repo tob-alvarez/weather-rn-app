@@ -7,6 +7,9 @@ export const WeatherContext = createContext();
 export const WeatherProvider = ({ children }) => {
     const [city, setCity] = useState('');
     const [temperature, setTemperature] = useState(null);
+    const [feelsLike, setFeelsLike] = useState(null);
+    const [tempMax, setTempMax] = useState(null);
+    const [tempMin, setTempMin] = useState(null);
     const [description, setDescription] = useState('');
     const [humidity, setHumidity] = useState(null);
     const [windSpeed, setWindSpeed] = useState(null);
@@ -38,6 +41,9 @@ export const WeatherProvider = ({ children }) => {
             const data = await getWeatherByCoords(latitude, longitude);
             setCity(data.name);
             setTemperature(Math.round(data.main.temp));
+            setFeelsLike(Math.round(data.main.feels_like));
+            setTempMax(Math.round(data.main.temp_max));
+            setTempMin(Math.round(data.main.temp_min));
             setDescription(data.weather[0].description);
             setHumidity(data.main.humidity);
             setWindSpeed(data.wind.speed);
@@ -78,6 +84,9 @@ export const WeatherProvider = ({ children }) => {
             value={{
                 city,
                 temperature,
+                feelsLike,
+                tempMax,
+                tempMin,
                 description,
                 humidity,
                 windSpeed,

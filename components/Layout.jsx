@@ -1,7 +1,9 @@
 // Layout.js
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Pressable } from 'react-native';
 import { WeatherContext } from '../components/context/WeatherContext';
+import Menu from './common/Menu';
+import { Entypo } from '@expo/vector-icons';
 
 const Layout = () => {
     const { city, temperature, loading, error, permissionDenied, handlePermissionRequest } = useContext(WeatherContext);
@@ -23,7 +25,9 @@ const Layout = () => {
                     {error && <Text style={styles.error}>{error}</Text>}
                     {city && temperature !== null && (
                         <View style={styles.weatherContainer}>
+                            <Menu />
                             <Text style={styles.city}>{city}</Text>
+                            <Entypo name="location-pin" size={24} color="white" />
                         </View>
                     )}
                 </>
@@ -35,18 +39,21 @@ const Layout = () => {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
-        paddingHorizontal: 40
+        paddingHorizontal: 20,
+        marginBottom: 10,
     },
     weatherContainer: {
         marginTop: 10,
         alignItems: 'center',
-        width: '100%'
-        
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
     },
     city: {
-        fontSize: 18,
+        fontSize: 24,
         fontFamily: 'outfit-bold',
-        color: 'white'
+        color: 'white',
+        marginStart: 15
     },
     error: {
         color: 'red',
@@ -70,6 +77,10 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         fontSize: 16,
     },
+    buttonH:{
+        borderRadius: 5,
+        alignItems: 'center',
+    }
 });
 
 export default Layout;
