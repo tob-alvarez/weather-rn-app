@@ -19,6 +19,7 @@ export const WeatherProvider = ({ children }) => {
     const [error, setError] = useState(null);
     const [location, setLocation] = useState(null);
     const [permissionDenied, setPermissionDenied] = useState(false);
+    const [searchHistory, setSearchHistory] = useState([]); 
 
     useEffect(() => {
         (async () => {
@@ -67,6 +68,40 @@ export const WeatherProvider = ({ children }) => {
         }
     };
 
+    const getWeatherByCity = async (cityName) => {
+        const API_KEY = 'a91ccd716fb61fa538751109cd598f2a';
+        const BASE_URL = 'http://api.openweathermap.org/data/2.5/weather';
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await fetch(`${BASE_URL}?q=${cityName}&appid=${API_KEY}&units=metric`);
+            const data = await response.json();
+            setCity(data.name);
+            setTemperature(Math.round(data.main.temp));
+            setFeelsLike(Math.round(data.main.feels_like));
+            setTempMax(Math.round(data.main.temp_max));
+            setTempMin(Math.round(data.main.temp_min));
+            setDescription(data.weather[0].description);
+            setHumidity(data.main.humidity);
+            setWindSpeed(data.wind.speed);
+            setPressure(data.main.pressure);
+            setIcon(data.weather[0].icon);
+
+            setSearchHistory((prevHistory) => {
+                const newHistory = [data.name, ...prevHistory];
+                return newHistory.slice(0, 3); 
+            });
+        } catch (err) {
+            setError('No se pudo obtener los datos del clima.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const removeCityFromHistory = (index) => {
+        setSearchHistory(prevHistory => prevHistory.filter((_, i) => i !== index));
+    };
+
     const handlePermissionRequest = async () => {
         let { status } = await Location.requestForegroundPermissionsAsync();
         if (status === 'granted') {
@@ -95,7 +130,10 @@ export const WeatherProvider = ({ children }) => {
                 loading,
                 error,
                 permissionDenied,
-                handlePermissionRequest
+                handlePermissionRequest,
+                getWeatherByCity,
+                searchHistory,
+                removeCityFromHistory
             }}
         >
             {children}

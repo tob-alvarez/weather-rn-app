@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { WeatherContext } from '../components/context/WeatherContext';
 
 const Principal = () => {
-    const { temperature, loading, error, description, humidity, icon, windSpeed, feelsLike, tempMax, tempMin } = useContext(WeatherContext);
+    const { temperature, description, icon, feelsLike, tempMax, tempMin } = useContext(WeatherContext);
 
     return (
         <View style={styles.container}>
@@ -15,13 +15,11 @@ const Principal = () => {
                 {icon && (
                     <Image
                         style={styles.icon}
-                        source={{ uri: `http://openweathermap.org/img/wn/${icon}.png` }}
+                        source={{ uri: `http://openweathermap.org/img/wn/${icon}@2x.png` }}
                     />
                 )}
             </View>
             <Text style={styles.details}>{tempMax}° / {tempMin}°  Feels like: {feelsLike}°</Text>
-            {/* <Text style={styles.details}>Humedad: {humidity}%</Text> */}
-            {/* <Text style={styles.details}>Viento: {windSpeed} m/s</Text> */}
         </View>
     );
 };

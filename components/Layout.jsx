@@ -22,14 +22,12 @@ const Layout = () => {
             ) : (
                 <>
                     {loading && <Text>Cargando...</Text>}
-                    {error && <Text style={styles.error}>{error}</Text>}
-                    {city && temperature !== null && (
                         <View style={styles.weatherContainer}>
                             <Menu />
                             <Text style={styles.city}>{city}</Text>
                             <Entypo name="location-pin" size={24} color="white" />
                         </View>
-                    )}
+                    {error && <Text style={styles.error}>{error}</Text>}
                 </>
             )}
         </View>
